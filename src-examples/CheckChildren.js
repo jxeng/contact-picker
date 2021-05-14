@@ -14,11 +14,13 @@ export default class extends Component {
                     id: 2,
                     name: 'Check/uncheck all children',
                     isExpanded: true,
+                    isDir: true,
                     children: [
                         {
                             id: 21,
                             name: 'Child 1',
                             isExpanded: true,
+                            isDir: true,
                             children: [
                                 {
                                     id: 5,
@@ -44,15 +46,15 @@ export default class extends Component {
                         },
                         {
                             id: 22,
-                            name: 'Child 2'
+                            name: 'Child 2',
                         },
                         {
                             id: 23,
-                            name: 'Child 3'
+                            name: 'Child 3',
                         },
                         {
                             id: 24,
-                            name: 'Child 4'
+                            name: 'Child 4',
                         }
                     ]
                 }
@@ -142,6 +144,7 @@ export default class extends Component {
                             <div className="panel-body">
                                 <SuperTreeView
                                     data={ this.state.data }
+                                    noChildrenAvailableMessage="没有数据"
                                     onCheckToggleCb={(nodes)=>{
                                         const checkState = nodes[0].isChecked;
 

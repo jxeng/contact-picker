@@ -1,53 +1,114 @@
 // VARIABLES
-$super-treeview-text-color: #000;
-$super-treeview-arrow-color: #000;
-$super-treeview-tree-stem-color: #000;
+$contact-text-color: #000;
+$contact-arrow-color: #000;
+$contact-tree-stem-color: #000;
+$contact-primary-color: #4d7cfe;
 
-.super-treeview * {
+label {
+  font-weight: normal;
+}
+.contact-checkbox {
+  position: relative;
+  cursor: pointer;
+  padding-left: 23px;
+  input {
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    height: 0;
+    width: 0;
+  }
+  &-mark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 18px;
+    width: 18px;
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,0.2);
+    &::after {
+      content: "";
+      position: absolute;
+      display: none;
+      left: 5px;
+      top: 1px;
+      width: 6px;
+      height: 11px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      transform: rotate(45deg);
+    }
+  }
+  input:checked ~ &-mark {
+    background-color: $contact-primary-color;
+    &::after {
+      display: block;
+    }
+  }
+}
+
+.contact * {
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
 }
-.super-treeview {
+.contact-header {
+  .root-name {
+    font-size: 18px;
+    cursor: pointer;
+  }
+  .curr-name {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    cursor: pointer;
+    .back {
+      color: $contact-primary-color;
+    }
+  }
+}
+.contact {
   font-size: 100%;
 
   > div {
-    > .super-treeview-no-children-transition {
+    > .contact-no-children-transition {
       transition-property: all;
     }
 
-    > .super-treeview-no-children-transition-enter {
+    > .contact-no-children-transition-enter {
       opacity: 0;
       height: 0;
       overflow: hidden;
 
-      &.super-treeview-no-children-transition-enter-active {
+      &.contact-no-children-transition-enter-active {
         opacity: 1;
         height: 0;
       }
     }
 
-    > .super-treeview-no-children {
+    > .contact-no-children {
       overflow: hidden;
-      > .super-treeview-no-children-content {
+      > .contact-no-children-content {
         margin: 2px 0;
       }
     }
 
-    > .super-treeview-node {
+    > .contact-node {
       overflow: hidden;
-      > .super-treeview-children-container {
+      > .contact-children-container {
         margin-left: 8px;
         padding-left: 20px;
-        border-left: 1px solid $super-treeview-tree-stem-color;
+        // border-left: 1px solid $  contact-tree-stem-color;
 
-        > .super-treeview-loading {
+        > .contact-loading {
           padding: 0 3px;
           margin: 2px 0;
         }
       }
 
-      > .super-treeview-node-content {
-        padding: 0 3px;
+      > .contact-node-content {
         margin: 2px 0;
 
         > label {
@@ -62,39 +123,33 @@ $super-treeview-tree-stem-color: #000;
           font-size: 100%;
         }
 
-        > input[type=checkbox] {
-          float: left;
-          margin: 4px 5px 0 0;
-          line-height: normal;
-        }
-
-        > .super-treeview-triangle-btn {
+        > .contact-triangle-btn {
           float: left;
           margin-right: 5px;
           cursor: pointer;
         }
-        
-        > .super-treeview-triangle-btn-none {
+
+        > .contact-triangle-btn-none {
           cursor: none;
         }
 
-        > .super-treeview-triangle-btn-right {
+        > .contact-triangle-btn-right {
           width: 8px;
           height: 10px;
           margin-top: 2px;
           margin-left: 2px;
           border-top: 5px solid transparent;
-          border-left: 6px solid $super-treeview-arrow-color;
+          border-left: 6px solid $contact-arrow-color;
           border-bottom: 5px solid transparent;
         }
 
-        > .super-treeview-triangle-btn-down {
+        > .contact-triangle-btn-down {
           width: 10px;
           height: 8px;
           margin-top: 5px;
           border-left: 5px solid transparent;
           border-right: 5px solid transparent;
-          border-top: 6px solid $super-treeview-arrow-color;
+          border-top: 6px solid $contact-arrow-color;
         }
 
         > .delete-btn {
@@ -104,24 +159,23 @@ $super-treeview-tree-stem-color: #000;
       }
     }
 
-    > .super-treeview-node-transition {
+    > .contact-node-transition {
       transition-property: all;
     }
 
-    > .super-treeview-node-transition-enter {
+    > .contact-node-transition-enter {
       opacity: 0;
 
-      &.super-treeview-node-transition-enter-active {
+      &.contact-node-transition-enter-active {
         opacity: 1;
       }
     }
 
-    > .super-treeview-node-transition-exit {
-      opacity: 1;
+    > .contact-node-transition-exit {
+      display: block;
 
-      &.super-treeview-node-transition-exit-active {
-        opacity: 0;
-        background-color: red;
+      &.contact-node-transition-exit-active {
+        display: none;
       }
     }
   }
