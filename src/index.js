@@ -1,68 +1,72 @@
 import './style.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import isNil from 'lodash/isNil';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
-import find from 'lodash/find';
 import get from 'lodash/get';
 import cloneDeep from 'lodash/cloneDeep';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-
-class SuperTreeview extends Component {
+class ContactPicker extends Component {
   constructor(props) {
     super(props);
 
     const data = cloneDeep(this.props.data);
+    const defaultIds = cloneDeep(this.props.defaultIds);
+    const defaultObj = cloneDeep(this.props.defaultObj);
 
     this.state = {
       data: data[0].children,
       lastCheckToggledNodeIndex: null,
       nodePath: [data[0]],
-      checkedObj: {},
-      checkedIds: [],
+      checkedObj: defaultObj,
+      checkedIds: defaultIds,
     };
 
-    this.handleUpdate = this.handleUpdate.bind(this);
-
     this.printNodes = this.printNodes.bind(this);
-    this.printChildren = this.printChildren.bind(this);
 
     this.printCheckbox = this.printCheckbox.bind(this);
-    this.printDeleteButton = this.printDeleteButton.bind(this);
-    this.printExpandButton = this.printExpandButton.bind(this);
     this.printNoChildrenMessage = this.printNoChildrenMessage.bind(this);
 
     this.handleCheckToggle = this.handleCheckToggle.bind(this);
-    this.handleDelete = this.handleDelete.bind(this);
-    this.handleExpandToggle = this.handleExpandToggle.bind(this);
+    this.handleCheckAllToggle = this.handleCheckAllToggle.bind(this);
 
     this.nodeClick = this.nodeClick.bind(this);
     this.goRoot = this.goRoot.bind(this);
     this.goBack = this.goBack.bind(this);
+    this.clearAll = this.clearAll.bind(this);
+  }
+
+  componentDidMount(){
+    this.props.onRef(this)
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!isEqual(nextProps.data, this.props.data)) {
-      this.setState({ data: cloneDeep(nextProps.data) });
+    if (!isEqual(nextProps.data, this.props.data)
+      || !isEqual(nextProps.defaultIds, this.props.defaultIds)
+      || !isEqual(nextProps.defaultObj, this.props.defaultObj)
+    ) {
+      this.setState({
+        ...this.state,
+        data: cloneDeep(nextProps.data),
+        defaultIds: cloneDeep(nextProps.defaultIds),
+        checkedIds: cloneDeep(nextProps.defaultIds),
+        defaultObj: cloneDeep(nextProps.defaultObj),
+        checkedObj: cloneDeep(nextProps.defaultObj),
+      });
     }
   }
 
-  handleUpdate(updatedData) {
-    const { depth, onUpdateCb } = this.props;
+  handleCheckToggle(node, addMode = false) {
+    const { keywordKey, onChangeCb } = this.props;
+    if (addMode && this.state.checkedObj[node[keywordKey]]) return;
 
-    onUpdateCb(updatedData, depth);
-  }
-
-  handleCheckToggle(node, e) {
-    const { keywordKey } = this.props;
-    const tmpNode = cloneDeep(node);
+    const tmpNode = {...node};
     delete tmpNode['children'];
-
-    console.log(tmpNode)
 
     let checkedObj = {...this.state.checkedObj};
     let checkedIds = [];
+
+
     if (!this.state.checkedObj[tmpNode[keywordKey]]) {
       checkedObj[tmpNode[keywordKey]] = tmpNode;
     } else {
@@ -77,61 +81,41 @@ class SuperTreeview extends Component {
         checkedIds.push(id);
       }
     }
-    console.log(checkedObj, checkedIds)
-    this.setState({...this.state, checkedObj, checkedIds})
 
-    // const { onCheckToggleCb, depth } = this.props;
-    // const { lastCheckToggledNodeIndex } = this.state;
-    // const data = cloneDeep(this.state.data);
-    // const currentNode = find(data, node);
-    // const currentNodeIndex = data.indexOf(currentNode);
-    // const toggledNodes = [];
-    // if (e.shiftKey && !isNil(lastCheckToggledNodeIndex)) {
-    //   const rangeStart = Math.min(
-    //     currentNodeIndex,
-    //     lastCheckToggledNodeIndex
-    //   );
-    //   const rangeEnd = Math.max(
-    //     currentNodeIndex,
-    //     lastCheckToggledNodeIndex
-    //   );
-
-    //   const nodeRange = data.slice(rangeStart, rangeEnd + 1);
-
-    //   nodeRange.forEach((node) => {
-    //     node.isChecked = e.target.checked;
-    //     toggledNodes.push(node);
-    //   });
-    // } else {
-    //   currentNode.isChecked = e.target.checked;
-    //   toggledNodes.push(currentNode);
-    // }
-
-    // onCheckToggleCb(toggledNodes, depth);
-    // this.setState({ lastCheckToggledNodeIndex: currentNodeIndex });
-    // this.handleUpdate(data);
-  }
-
-  handleDelete(node) {
-    const { onDeleteCb, depth } = this.props;
-    const data = cloneDeep(this.state.data);
-
-    const newData = data.filter((nodeItem) => {
-      return !isEqual(node, nodeItem);
+    this.setState({...this.state, checkedObj, checkedIds}, () => {
+      onChangeCb(checkedIds, checkedObj);
     });
-
-    onDeleteCb(node, newData, depth) && this.handleUpdate(newData);
   }
 
-  handleExpandToggle(node) {
-    const { onExpandToggleCb, depth } = this.props;
-    const data = cloneDeep(this.state.data);
-    const currentNode = find(data, node);
+  handleCheckAllToggle(nodes, isChecked) {
+    if (!nodes || nodes.length === 0) return;
 
-    currentNode.isExpanded = !currentNode.isExpanded;
+    const { keywordKey, keywordDir, onChangeCb } = this.props;
 
-    onExpandToggleCb(currentNode, depth);
-    this.handleUpdate(data);
+    let checkedObj = {...this.state.checkedObj};
+    let checkedIds = [...this.state.checkedIds];
+
+    let ids = nodes.filter(item => !item[keywordDir]).map(item => item[keywordKey]);
+
+    checkedIds = checkedIds.filter(id => !ids.includes(id));
+
+    if (!isChecked) checkedIds = [...checkedIds, ...ids];
+
+    for (const node of nodes) {
+      if (node[keywordDir]) continue;
+      const tmpNode = {...node};
+      delete tmpNode['children'];
+
+      if (!checkedObj[tmpNode[keywordKey]] && !isChecked) {
+        checkedObj[tmpNode[keywordKey]] = tmpNode;
+      } else if (checkedObj[tmpNode[keywordKey]] && isChecked) {
+        delete checkedObj[tmpNode[keywordKey]];
+      }
+    }
+
+    this.setState({...this.state, checkedObj, checkedIds}, () => {
+      onChangeCb(checkedIds, checkedObj);
+    });
   }
 
   printCheckbox(node) {
@@ -142,49 +126,13 @@ class SuperTreeview extends Component {
         <input
           type="checkbox"
           name={node[keywordLabel]}
-          onClick={(e) => {
-            this.handleCheckToggle(node, e);
+          onClick={() => {
+            this.handleCheckToggle(node, false);
           }}
           checked={!!this.state.checkedObj[node.id]}
           id={node.id}
         />
       );
-    }
-  }
-
-  printDeleteButton(node) {
-    const { isDeletable, depth, deleteElement } = this.props;
-
-    if (isDeletable(node, depth)) {
-      return (
-        <div className="delete-btn"
-          onClick={() => {
-            this.handleDelete(node);
-          }}
-        >
-          {deleteElement}
-        </div>
-      );
-    }
-  }
-
-  printExpandButton(node) {
-    const className = node.isExpanded
-      ? 'contact-triangle-btn-down'
-      : 'contact-triangle-btn-right';
-    const { isExpandable, depth } = this.props;
-
-    if (isExpandable(node, depth)) {
-      return (
-        <div
-          className={`contact-triangle-btn ${className}`}
-          onClick={() => {
-            this.handleExpandToggle(node);
-          }}
-        />
-      );
-    } else {
-      return <div className={`contact-triangle-btn   contact-triangle-btn-none`} />
     }
   }
 
@@ -217,128 +165,6 @@ class SuperTreeview extends Component {
     );
   }
 
-  printNodes(nodeArray) {
-    const {
-      keywordKey,
-      keywordLabel,
-      keywordDir,
-      depth,
-      transitionEnterTimeout,
-      transitionExitTimeout,
-      getStyleClassCb
-    } = this.props;
-    const { nodePath, checkedObj, checkedIds } = this.state;
-    const {
-      printExpandButton,
-      printCheckbox,
-      printDeleteButton,
-      printChildren,
-      nodeClick,
-      goRoot,
-      goBack,
-    } = this;
-
-    const nodeTransitionProps = {
-      classNames: 'contact-node-transition',
-      style: {
-        transitionDuration: `${transitionEnterTimeout}ms`
-      },
-      timeout: {
-        enter: transitionEnterTimeout,
-        exit: transitionExitTimeout
-      }
-    };
-
-    const currNode = nodePath[nodePath.length - 1];
-
-    return (
-      <TransitionGroup>
-        <CSSTransition {...nodeTransitionProps}>
-          <div className="contact-header">
-            <div className="root-name" onClick={goRoot}>{nodePath[0][keywordLabel]}</div>
-            <div className="curr-name">
-              <label className="contact-checkbox">
-                <input
-                  type="checkbox"
-                  checked={currNode.children && !currNode.children.filter(item => !item.isDir).some(item => !checkedObj[item.id])}
-                />
-                {currNode[keywordLabel]}
-                <span className="contact-checkbox-mark"></span>
-              </label>
-              <span className="back">{nodePath.length > 1 && <div onClick={goBack}>返回上一级</div>}</span>
-            </div>
-          </div>
-        </CSSTransition>
-        {isEmpty(nodeArray)
-          ? this.printNoChildrenMessage()
-          : nodeArray.map((node, index) => {
-            const nodeText = get(node, keywordLabel, '');
-            const isDir = get(node, keywordDir, false);
-
-            return (
-              <CSSTransition
-                {...nodeTransitionProps}
-                key={node[keywordKey] || index}
-              >
-                <div
-                  className={
-                    'contact-node' +
-                    getStyleClassCb(node)
-                  }
-                  onClick={() => nodeClick(node)}
-                >
-                  <div className="contact-node-content">
-                    <label className="contact-checkbox">
-                      {!isDir && printCheckbox(node, depth)}
-                      {node[keywordLabel]}
-                      {!isDir && <span className="contact-checkbox-mark"></span>}
-                    </label>
-                  </div>
-                </div>
-              </CSSTransition>
-            );
-          })}
-      </TransitionGroup>
-    );
-  }
-
-  printChildren(node) {
-    if (!node.isExpanded) {
-      return null;
-    }
-
-    const { keywordChildren, keywordChildrenLoading, depth } = this.props;
-    const isChildrenLoading = get(node, keywordChildrenLoading, false);
-    let childrenElement;
-
-    if (isChildrenLoading) {
-      childrenElement = get(this.props, 'loadingElement');
-    } else {
-      childrenElement = (
-        <SuperTreeview
-          {...this.props}
-          data={node[keywordChildren] || []}
-          depth={depth + 1}
-          onUpdateCb={onChildrenUpdateCb.bind(this)}
-        />
-      );
-    }
-
-    return (
-      <div className="contact-children-container">
-        {childrenElement}
-      </div>
-    );
-
-    function onChildrenUpdateCb(updatedData) {
-      const data = cloneDeep(this.state.data);
-      const currentNode = find(data, node);
-
-      currentNode[keywordChildren] = updatedData;
-      this.handleUpdate(data);
-    }
-  }
-
   nodeClick(node) {
     const { keywordDir } = this.props;
     const isDir = get(node, keywordDir, false);
@@ -360,16 +186,135 @@ class SuperTreeview extends Component {
     this.setState({...this.state, data: nodePath[nodePath.length - 1].children, nodePath});
   }
 
+  clearAll() {
+    this.setState({...this.state, checkedIds: [], checkedObj: {}});
+  }
+
+  printNodes(nodeArray) {
+    const nodes = cloneDeep(nodeArray);
+
+    const {
+      keywordKey,
+      keywordLabel,
+      keywordDir,
+      depth,
+      transitionEnterTimeout,
+      transitionExitTimeout,
+      getStyleClassCb,
+      itemRender,
+    } = this.props;
+    const { nodePath, checkedObj } = this.state;
+    const {
+      printCheckbox,
+      nodeClick,
+      goRoot,
+      goBack,
+    } = this;
+
+    const nodeTransitionProps = {
+      classNames: 'contact-node-transition',
+      style: {
+        transitionDuration: `${transitionEnterTimeout}ms`
+      },
+      timeout: {
+        enter: transitionEnterTimeout,
+        exit: transitionExitTimeout
+      }
+    };
+
+    const compareFunc = (prev, curr) => {
+      if (prev[keywordDir] && !curr[keywordDir]) return -1;
+      if (!prev[keywordDir] && curr[keywordDir] ) return 1;
+      return 0;
+    };
+
+    Array.isArray(nodes) && nodes.sort(compareFunc);
+
+    const currNode = nodePath[nodePath.length - 1];
+
+    const checkableChildren = currNode.children && currNode.children.filter(item => !item.isDir) || [];
+
+    const allChecked = checkableChildren.length > 0 && !checkableChildren.some(item => !checkedObj[item.id]);
+
+
+
+    return (
+      <TransitionGroup className="list">
+        <CSSTransition {...nodeTransitionProps}>
+          <div className="contact-header">
+            <div className="root-name" onClick={goRoot}>{nodePath[0][keywordLabel]}</div>
+            <div className="curr-name">
+              <label className="contact-checkbox">
+                <input
+                  type="checkbox"
+                  onClick={() => {
+                    this.handleCheckAllToggle(currNode.children, allChecked);
+                  }}
+                  checked={allChecked}
+                />
+                {currNode[keywordLabel]}({checkableChildren.length})
+                <span className="contact-checkbox-mark"></span>
+              </label>
+              <span className="back">{nodePath.length > 1 && <div onClick={goBack}>返回上一级</div>}</span>
+            </div>
+          </div>
+        </CSSTransition>
+        {isEmpty(nodeArray)
+          ? this.printNoChildrenMessage()
+          : nodes.map((node, index) => {
+            const isDir = get(node, keywordDir, false);
+
+            return (
+              <CSSTransition
+                {...nodeTransitionProps}
+                key={node[keywordKey] || index}
+              >
+                <div
+                  className={
+                    'contact-node' +
+                    getStyleClassCb(node)
+                  }
+                  onClick={() => nodeClick(node)}
+                >
+                  <div className="contact-node-content">
+                    <label className="contact-checkbox">
+                      {!isDir && printCheckbox(node, depth)}
+                      {itemRender(node)}
+                      {!isDir && <span className="contact-checkbox-mark"></span>}
+                    </label>
+                  </div>
+                </div>
+              </CSSTransition>
+            );
+          })}
+      </TransitionGroup>
+    );
+  }
+
+  printMembers() {
+    const { checkedIds, checkedObj } = this.state;
+    const { selectedItemRender, searchRender } = this.props;
+    return (<div className="members">
+        <div className="members-search">{searchRender()}</div>
+        <p className="members-header">
+          <span>已选成员：{checkedIds.length}</span>
+          <span className="clear" onClick={this.clearAll}>清空</span>
+        </p>
+        {checkedIds.map(id =>selectedItemRender(checkedObj[id]))}
+      </div>)
+  }
+
   render() {
     return (
       <div className="contact">
         {this.printNodes(this.state.data)}
+        {this.printMembers()}
       </div>
     );
   }
 }
 
-SuperTreeview.propTypes = {
+ContactPicker.propTypes = {
   data: PropTypes.array.isRequired,
   depth: PropTypes.number,
 
@@ -390,16 +335,16 @@ SuperTreeview.propTypes = {
   loadingElement: PropTypes.element,
   noChildrenAvailableMessage: PropTypes.string,
 
-  onCheckToggleCb: PropTypes.func,
-  onDeleteCb: PropTypes.func,
-  onExpandToggleCb: PropTypes.func,
-  onUpdateCb: PropTypes.func,
+  onChangeCb: PropTypes.func,
+  itemRender: PropTypes.func,
+  selectedItemRender: PropTypes.func,
 
   transitionEnterTimeout: PropTypes.number,
-  transitionExitTimeout: PropTypes.number
+  transitionExitTimeout: PropTypes.number,
+
 };
 
-SuperTreeview.defaultProps = {
+ContactPicker.defaultProps = {
   depth: 0,
 
   deleteElement: <div>(X)</div>,
@@ -417,6 +362,14 @@ SuperTreeview.defaultProps = {
     return false;
   },
 
+  defaultIds: () => {
+    return [];
+  },
+
+  defaultObj: () => {
+    return {}
+  },
+
   keywordChildren: 'children',
   keywordChildrenLoading: 'isChildrenLoading',
   keywordLabel: 'name',
@@ -425,15 +378,15 @@ SuperTreeview.defaultProps = {
 
   loadingElement: <div>loading...</div>,
 
-  noChildrenAvailableMessage: 'No data found',
+  noChildrenAvailableMessage: '没有数据',
 
-  onCheckToggleCb: (/* Array of nodes, depth */) => {},
-  onDeleteCb: (/* node, updatedData, depth */) => { return true },
-  onExpandToggleCb: (/* node, depth */) => {},
-  onUpdateCb: (/* updatedData, depth */) => {},
+  onChangeCb: (/* checkedIds, checkedObj */) => {},
+  searchRender: () => {},
+  itemRender: (item) => item[this.keywordLabel],
+  selectedItemRender: (item) => item[this.keywordLabel],
 
   transitionEnterTimeout: 500,
   transitionExitTimeout: 500
 };
 
-export default SuperTreeview;
+export default ContactPicker;

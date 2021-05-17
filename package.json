@@ -1,7 +1,7 @@
 {
-  "name": "react-super-treeview",
-  "version": "0.3.3-beta.0",
-  "description": "React Super Treeview",
+  "name": "contact-picker",
+  "version": "0.0.1",
+  "description": "Contact picker for enterprise",
   "main": "dist/main.js",
   "engines": {
     "node": ">=6.7.0",
@@ -14,11 +14,11 @@
     "clean:dist": "rm -rf dist",
     "clean:examples": "rm -rf examples",
     "dev:watch": "node ./node_modules/webpack/bin/webpack.js --watch",
-    "test": "./node_modules/mocha-webpack/bin/mocha-webpack --webpack-config webpack.test.js \"src/**/*.test.js\"",
+    "test": "node ./node_modules/mocha-webpack/bin/mocha-webpack --webpack-config webpack.test.js \"src/**/*.test.js\"",
     "test:watch": "./node_modules/mocha-webpack/bin/mocha-webpack -w --webpack-config webpack.test.js \"src/**/*.test.js\"",
-    "examples": "npm run clean:examples && npm run build && ./node_modules/webpack/bin/webpack.js --config webpack.examples.js",
+    "examples": "npm run clean:examples && npm run build && node ./node_modules/webpack/bin/webpack.js --config webpack.examples.js",
     "examples:watch": "node ./node_modules/webpack/bin/webpack.js --config webpack.examples.js --watch",
-    "build": "npm run clean:dist && npm test && ./node_modules/webpack/bin/webpack.js",
+    "build": "npm run clean:dist && node ./node_modules/webpack/bin/webpack.js",
     "preversion": "npm run build",
     "prepublishOnly": "npm run build"
   },
