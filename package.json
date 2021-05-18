@@ -1,6 +1,6 @@
 {
   "name": "contact-picker",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Contact picker for enterprise",
   "main": "dist/main.js",
   "engines": {
@@ -24,24 +24,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/azizali/react-super-treeview.git"
+    "url": "https://github.com/jxeng/contact-picker.git"
   },
   "bugs": {
-    "url": "https://github.com/azizali/react-super-treeview/issues"
+    "url": "https://github.com/jxeng/contact-picker/issues"
   },
-  "homepage": "https://github.com/azizali/react-super-treeview",
+  "homepage": "https://github.com/jxeng/contact-picker",
   "keywords": [
     "react-component",
-    "react-super-treeview",
-    "expandable-tree",
-    "treeview",
-    "tree",
-    "expand",
-    "expandable",
-    "collapsable",
-    "collapse"
+    "contact",
+    "picker"
   ],
-  "author": "Aziz Ali <aziz@ilovecoding.org>",
+  "author": "jxeng",
   "license": "MIT",
   "peerDependencies": {
     "react": "^15.6.1 || ^16.0.0",
