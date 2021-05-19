@@ -25464,9 +25464,9 @@ var ContactPicker = function (_Component) {
     var defaultObj = (0, _cloneDeep2.default)(_this.props.defaultObj);
 
     _this.state = {
-      data: data[0].children,
+      data: data.length > 0 ? data[0].children : [],
       lastCheckToggledNodeIndex: null,
-      nodePath: [data[0]],
+      nodePath: data.length > 0 ? [data[0]] : [],
       checkedObj: defaultObj,
       checkedIds: defaultIds
     };
@@ -25695,6 +25695,7 @@ var ContactPicker = function (_Component) {
   }, {
     key: 'goRoot',
     value: function goRoot() {
+      if (this.state.nodePath.length === 0) return;
       var nodePath = (0, _cloneDeep2.default)(this.state.nodePath);
       this.setState(_extends({}, this.state, { data: nodePath[0].children, nodePath: nodePath.slice(0, 1) }));
     }
@@ -25715,6 +25716,7 @@ var ContactPicker = function (_Component) {
     value: function printNodes(nodeArray) {
       var _this3 = this;
 
+      if (this.state.nodePath.length === 0) return _react2.default.createElement('div', { className: 'list' });
       var nodes = (0, _cloneDeep2.default)(nodeArray);
 
       var _props5 = this.props,

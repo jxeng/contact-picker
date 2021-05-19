@@ -15,9 +15,9 @@ class ContactPicker extends Component {
     const defaultObj = cloneDeep(this.props.defaultObj);
 
     this.state = {
-      data: data[0].children,
+      data: data.length > 0 ? data[0].children : [],
       lastCheckToggledNodeIndex: null,
-      nodePath: [data[0]],
+      nodePath: data.length > 0 ? [data[0]] : [],
       checkedObj: defaultObj,
       checkedIds: defaultIds,
     };
@@ -176,6 +176,7 @@ class ContactPicker extends Component {
   }
 
   goRoot() {
+    if (this.state.nodePath.length === 0) return;
     const nodePath = cloneDeep(this.state.nodePath);
     this.setState({...this.state, data: nodePath[0].children, nodePath: nodePath.slice(0,1)});
   }
@@ -191,6 +192,7 @@ class ContactPicker extends Component {
   }
 
   printNodes(nodeArray) {
+    if (this.state.nodePath.length === 0) return <div className="list"></div>;
     const nodes = cloneDeep(nodeArray);
 
     const {
