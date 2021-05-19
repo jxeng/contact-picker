@@ -6,6 +6,7 @@ import isEqual from 'lodash/isEqual';
 import get from 'lodash/get';
 import cloneDeep from 'lodash/cloneDeep';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { find } from 'lodash';
 class ContactPicker extends Component {
   constructor(props) {
     super(props);
@@ -20,6 +21,7 @@ class ContactPicker extends Component {
       nodePath: data.length > 0 ? [data[0]] : [],
       checkedObj: defaultObj,
       checkedIds: defaultIds,
+      loading: false,
     };
 
     this.printNodes = this.printNodes.bind(this);
@@ -48,8 +50,8 @@ class ContactPicker extends Component {
       const data = cloneDeep(nextProps.data);
       this.setState({
         ...this.state,
-        data: data.length > 0 ? data[0].children : [],
-        nodePath: data.length > 0 ? [data[0]] : [],
+        data: this.state.data.length > 0 ? this.state.data :(data.length > 0 ? data[0].children : []),
+        nodePath: this.state.nodePath.length > 0 ? this.state.nodePath : (data.length > 0 ? [data[0]] : []),
         defaultIds: cloneDeep(nextProps.defaultIds),
         checkedIds: cloneDeep(nextProps.defaultIds),
         defaultObj: cloneDeep(nextProps.defaultObj),
@@ -121,27 +123,25 @@ class ContactPicker extends Component {
   }
 
   printCheckbox(node) {
-    const { isCheckable, keywordKey, keywordLabel, depth } = this.props;
+    const { keywordKey, keywordLabel } = this.props;
 
-    if (isCheckable(node, depth)) {
-      return (
-        <input
-          type="checkbox"
-          name={node[keywordLabel]}
-          onClick={() => {
-            this.handleCheckToggle(node, false);
-          }}
-          checked={!!this.state.checkedObj[node[keywordKey]]}
-          id={node[keywordKey]}
-        />
-      );
-    }
+    return (
+      <input
+        type="checkbox"
+        name={node[keywordLabel]}
+        onClick={() => {
+          this.handleCheckToggle(node, false);
+        }}
+        checked={!!this.state.checkedObj[node[keywordKey]]}
+        id={node[keywordKey]}
+        onChange={() => {}}
+      />
+    );
   }
 
-  printNoChildrenMessage() {
+  printMessage(element) {
     const {
       transitionExitTimeout,
-      noChildrenAvailableMessage
     } = this.props;
     const noChildrenTransitionProps = {
       classNames: 'contact-no-children-transition',
@@ -160,21 +160,39 @@ class ContactPicker extends Component {
       <CSSTransition {...noChildrenTransitionProps}>
         <div className="contact-no-children">
           <div className="contact-no-children-content">
-            {noChildrenAvailableMessage}
+            {element}
           </div>
         </div>
       </CSSTransition>
     );
   }
 
+  printNoChildrenMessage() {
+    const {
+      noChildrenAvailableMessage
+    } = this.props;
+    this.printMessage(noChildrenAvailableMessage)
+  }
+
+  printLoadingMessage() {
+    const {
+      loadingMessage
+    } = this.props;
+    this.printMessage(loadingMessage)
+  }
+
   nodeClick(node) {
-    const { keywordDir } = this.props;
+    const { keywordDir, onUpdateCb } = this.props;
     const isDir = get(node, keywordDir, false);
     if (!isDir) return;
-    const nodePath = cloneDeep(this.state.nodePath);
-    nodePath.push(node);
-    const state = {...this.state, data: node.children, nodePath};
-    this.setState(state);
+    const currNode = cloneDeep(node);
+    this.setState({...this.state, loading: true});
+    onUpdateCb(node).then(updateData => {
+      if (updateData.length > 0) currNode.children = updateData;
+      const nodePath = cloneDeep(this.state.nodePath);
+      nodePath.push(currNode);
+      this.setState({...this.state, data: currNode.children, nodePath, loading: false});
+    })
   }
 
   goRoot() {
@@ -194,7 +212,7 @@ class ContactPicker extends Component {
   }
 
   printNodes(nodeArray) {
-    if (this.state.nodePath.length === 0) return <div className="list"></div>;
+    if (this.state.nodePath.length === 0) return <div className="contact-list"></div>;
     const nodes = cloneDeep(nodeArray);
 
     const {
@@ -243,57 +261,57 @@ class ContactPicker extends Component {
 
 
     return (
-      <TransitionGroup className="contact-list">
-        <CSSTransition {...nodeTransitionProps}>
-          <div className="contact-header">
-            <div className="root-name" onClick={goRoot}>{nodePath[0][keywordLabel]}</div>
-            <div className="curr-name">
-              <label className="contact-checkbox">
-                <input
-                  type="checkbox"
-                  onClick={() => {
-                    this.handleCheckAllToggle(currNode.children, allChecked);
-                  }}
-                  checked={allChecked}
-                />
-                {currNode[keywordLabel]}({checkableChildren.length})
-                <span className="contact-checkbox-mark"></span>
-              </label>
-              <span className="back">{nodePath.length > 1 && <div onClick={goBack}>返回上一级</div>}</span>
+      <div className="contact-list">
+        <TransitionGroup>
+          <CSSTransition {...nodeTransitionProps}>
+            <div className="contact-header">
+              <div className="root-name" onClick={goRoot}>{nodePath[0][keywordLabel]}</div>
+              <div className="curr-name">
+                <label className="contact-checkbox">
+                  <input
+                    type="checkbox"
+                    onClick={() => {
+                      this.handleCheckAllToggle(currNode.children, allChecked);
+                    }}
+                    checked={allChecked}
+                    onChange={() => {}}
+                  />
+                  {currNode[keywordLabel]}({checkableChildren.length})
+                  <span className="contact-checkbox-mark"></span>
+                </label>
+                <span className="back">{nodePath.length > 1 && <div onClick={goBack}>返回上一级</div>}</span>
+              </div>
             </div>
-          </div>
-        </CSSTransition>
+          </CSSTransition>
+        </TransitionGroup>
         <div className="item-container">
         {isEmpty(nodeArray)
           ? this.printNoChildrenMessage()
+          : this.state.loading ? '正在加载'
           : nodes.map((node, index) => {
             const isDir = get(node, keywordDir, false);
 
             return (
-              <CSSTransition
-                {...nodeTransitionProps}
+              <div
+                className={
+                  'contact-node' +
+                  getStyleClassCb(node)
+                }
                 key={node[keywordKey] || index}
+                onClick={() => nodeClick(node)}
               >
-                <div
-                  className={
-                    'contact-node' +
-                    getStyleClassCb(node)
-                  }
-                  onClick={() => nodeClick(node)}
-                >
-                  <div className="contact-node-content">
-                    <label className="contact-checkbox">
-                      {!isDir && printCheckbox(node, depth)}
-                      {itemRender(node)}
-                      {!isDir && <span className="contact-checkbox-mark"></span>}
-                    </label>
-                  </div>
+                <div className="contact-node-content">
+                  <label className="contact-checkbox">
+                    {!isDir && printCheckbox(node, depth)}
+                    {itemRender(node)}
+                    {!isDir && <span className="contact-checkbox-mark"></span>}
+                  </label>
                 </div>
-              </CSSTransition>
+              </div>
             );
           })}
         </div>
-      </TransitionGroup>
+      </div>
     );
   }
 
@@ -343,6 +361,7 @@ ContactPicker.propTypes = {
   loadingElement: PropTypes.element,
   noChildrenAvailableMessage: PropTypes.string,
 
+  onUpdateCb: PropTypes.func,
   onChangeCb: PropTypes.func,
   itemRender: PropTypes.func,
   selectedItemRender: PropTypes.func,
@@ -384,10 +403,10 @@ ContactPicker.defaultProps = {
   keywordKey: 'id',
   keywordDir: 'isDir',
 
-  loadingElement: <div>loading...</div>,
-
+  loadingMessage: '正在加载',
   noChildrenAvailableMessage: '没有数据',
 
+  onUpdateCb: (item) => { return Promise.resolve([])},
   onChangeCb: (/* checkedIds, checkedObj */) => {},
   searchRender: () => {},
   itemRender: (item) => item[this.keywordLabel],

@@ -174,6 +174,25 @@ export default class extends Component {
 	}, 1000)
 	}
 
+	updateCb = (item) => {
+		console.log(item)
+		if (!item.isDir) return;
+		return new Promise(resolve => setTimeout(resolve, 1000)).then(() => ([
+				{
+					"sId": "1117",
+					"sName": "22二位",
+					"isDir": false,
+					"sParentId": "2"
+				},
+				{
+					"sId": "1118",
+					"sName": "11二位",
+					"isDir": false,
+					"sParentId": "2"
+				}
+			]))
+	}
+
   changeCb = (checkedIds, checkedObj) => {
     console.log(checkedIds, checkedObj);
   }
@@ -223,6 +242,7 @@ export default class extends Component {
             keywordDir={this.keywordDir}
             noChildrenAvailableMessage="没有数据"
             onChangeCb={this.changeCb}
+            onUpdateCb={this.updateCb}
             itemRender={this.itemRender}
             selectedItemRender={this.selectedItemRender}
             searchRender={this.searchRender}
