@@ -1,6 +1,6 @@
 {
   "name": "contact-picker",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Contact picker for enterprise",
   "main": "dist/main.js",
   "engines": {

@@ -45,9 +45,11 @@ class ContactPicker extends Component {
       || !isEqual(nextProps.defaultIds, this.props.defaultIds)
       || !isEqual(nextProps.defaultObj, this.props.defaultObj)
     ) {
+      const data = cloneDeep(nextProps.data);
       this.setState({
         ...this.state,
-        data: cloneDeep(nextProps.data),
+        data: data.length > 0 ? data[0].children : [],
+        nodePath: data.length > 0 ? [data[0]] : [],
         defaultIds: cloneDeep(nextProps.defaultIds),
         checkedIds: cloneDeep(nextProps.defaultIds),
         defaultObj: cloneDeep(nextProps.defaultObj),

@@ -25240,53 +25240,64 @@ var _class = function (_Component) {
 		};
 
 		_this.state = {
-			data: [{
-				id: 2,
-				name: 'Check/uncheck all children',
-				icon: '',
-				isDir: true,
-				children: [{
-					id: 21,
-					name: 'Child 1',
-					icon: '',
-					isDir: true,
-					children: [{
-						id: 5,
-						name: "Grand Child 1",
-						icon: 'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/BB12cKGd.img'
-					}, {
-						id: 6,
-						name: "Grand Child 2",
-						icon: 'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/BB12cKGd.img'
-					}, {
-						id: 7,
-						name: "Grand Child 3",
-						icon: 'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/BB12cKGd.img'
-					}, {
-						id: 8,
-						name: "Grand Child 4",
-						icon: 'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/BB12cKGd.img'
-					}]
-				}, {
-					id: 22,
-					name: 'Child 2',
-					icon: 'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/BB12cKGd.img'
-				}, {
-					id: 23,
-					name: 'Child 3',
-					icon: 'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/BB12cKGd.img'
-				}, {
-					id: 24,
-					name: 'Child 4',
-					icon: '',
-					isDir: true
-				}]
-			}]
+			data: []
 		};
 		return _this;
 	}
 
 	_createClass(_class, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			var _this2 = this;
+
+			setTimeout(function () {
+				_this2.setState({
+					data: [{
+						id: 2,
+						name: 'Check/uncheck all children',
+						icon: '',
+						isDir: true,
+						children: [{
+							id: 21,
+							name: 'Child 1',
+							icon: '',
+							isDir: true,
+							children: [{
+								id: 5,
+								name: "Grand Child 1",
+								icon: 'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/BB12cKGd.img'
+							}, {
+								id: 6,
+								name: "Grand Child 2",
+								icon: 'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/BB12cKGd.img'
+							}, {
+								id: 7,
+								name: "Grand Child 3",
+								icon: 'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/BB12cKGd.img'
+							}, {
+								id: 8,
+								name: "Grand Child 4",
+								icon: 'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/BB12cKGd.img'
+							}]
+						}, {
+							id: 22,
+							name: 'Child 2',
+							icon: 'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/BB12cKGd.img'
+						}, {
+							id: 23,
+							name: 'Child 3',
+							icon: 'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/BB12cKGd.img'
+						}, {
+							id: 24,
+							name: 'Child 4',
+							icon: '',
+							isDir: true
+						}]
+					}]
+				});
+			}, 1000);
+		}
+	}, {
 		key: 'render',
 		value: function render() {
 			return _react2.default.createElement(
@@ -25495,8 +25506,10 @@ var ContactPicker = function (_Component) {
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(nextProps) {
       if (!(0, _isEqual2.default)(nextProps.data, this.props.data) || !(0, _isEqual2.default)(nextProps.defaultIds, this.props.defaultIds) || !(0, _isEqual2.default)(nextProps.defaultObj, this.props.defaultObj)) {
+        var data = (0, _cloneDeep2.default)(nextProps.data);
         this.setState(_extends({}, this.state, {
-          data: (0, _cloneDeep2.default)(nextProps.data),
+          data: data.length > 0 ? data[0].children : [],
+          nodePath: data.length > 0 ? [data[0]] : [],
           defaultIds: (0, _cloneDeep2.default)(nextProps.defaultIds),
           checkedIds: (0, _cloneDeep2.default)(nextProps.defaultIds),
           defaultObj: (0, _cloneDeep2.default)(nextProps.defaultObj),

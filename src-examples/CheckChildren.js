@@ -7,6 +7,17 @@ export default class extends Component {
 		super();
 
 		this.state = {
+			data: []
+		}
+	}
+
+  keywordKey = 'id'
+  keywordLabel = 'name'
+  keywordDir = 'isDir'
+
+	componentDidMount() {
+		setTimeout(() => {
+		this.setState({
 			data: [
 				{
 					id: 2,
@@ -61,13 +72,9 @@ export default class extends Component {
 					]
 				}
 			]
-		}
+		})
+	}, 1000)
 	}
-
-  keywordKey = 'id'
-  keywordLabel = 'name'
-  keywordDir = 'isDir'
-
 
   changeCb = (checkedIds, checkedObj) => {
     console.log(checkedIds, checkedObj);
