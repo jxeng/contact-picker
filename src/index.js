@@ -61,8 +61,8 @@ class ContactPicker extends Component {
   handleCheckToggle(node, addMode = false) {
     const { keywordKey, onChangeCb } = this.props;
     if (addMode && this.state.checkedObj[node[keywordKey]]) return;
-
     const tmpNode = {...node};
+    if (tmpNode[keywordKey] === undefined) return;
     delete tmpNode['children'];
 
     let checkedObj = {...this.state.checkedObj};
@@ -121,7 +121,7 @@ class ContactPicker extends Component {
   }
 
   printCheckbox(node) {
-    const { isCheckable, keywordLabel, depth } = this.props;
+    const { isCheckable, keywordKey, keywordLabel, depth } = this.props;
 
     if (isCheckable(node, depth)) {
       return (
@@ -131,8 +131,8 @@ class ContactPicker extends Component {
           onClick={() => {
             this.handleCheckToggle(node, false);
           }}
-          checked={!!this.state.checkedObj[node.id]}
-          id={node.id}
+          checked={!!this.state.checkedObj[node[keywordKey]]}
+          id={node[keywordKey]}
         />
       );
     }
@@ -238,12 +238,12 @@ class ContactPicker extends Component {
 
     const checkableChildren = currNode.children && currNode.children.filter(item => !item.isDir) || [];
 
-    const allChecked = checkableChildren.length > 0 && !checkableChildren.some(item => !checkedObj[item.id]);
+    const allChecked = checkableChildren.length > 0 && !checkableChildren.some(item => !checkedObj[item[keywordKey]]);
 
 
 
     return (
-      <TransitionGroup className="list">
+      <TransitionGroup className="contact-list">
         <CSSTransition {...nodeTransitionProps}>
           <div className="contact-header">
             <div className="root-name" onClick={goRoot}>{nodePath[0][keywordLabel]}</div>
@@ -263,6 +263,7 @@ class ContactPicker extends Component {
             </div>
           </div>
         </CSSTransition>
+        <div className="item-container">
         {isEmpty(nodeArray)
           ? this.printNoChildrenMessage()
           : nodes.map((node, index) => {
@@ -291,6 +292,7 @@ class ContactPicker extends Component {
               </CSSTransition>
             );
           })}
+        </div>
       </TransitionGroup>
     );
   }
@@ -298,13 +300,15 @@ class ContactPicker extends Component {
   printMembers() {
     const { checkedIds, checkedObj } = this.state;
     const { selectedItemRender, searchRender } = this.props;
-    return (<div className="members">
+    return (<div className="contact-members">
         <div className="members-search">{searchRender()}</div>
         <p className="members-header">
           <span>已选成员：{checkedIds.length}</span>
           <span className="clear" onClick={this.clearAll}>清空</span>
         </p>
-        {checkedIds.map(id =>selectedItemRender(checkedObj[id]))}
+        <div className="item-container">
+          {checkedIds.map(id =>selectedItemRender(checkedObj[id]))}
+        </div>
       </div>)
   }
 

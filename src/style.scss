@@ -53,17 +53,23 @@ label {
 
 .contact {
   display: flex;
-  .list {
+  .contact-list {
     flex: 3;
+    .item-container {
+      height: 400px;
+      overflow: auto;
+    }
   }
-  .members {
+  .contact-members {
     flex: 2;
-    min-height: 400px;
     border-left: 1px solid rgba(0,0,0,0.2);
     margin-top: 50px;
-    margin-left: 20px;
     padding-left: 20px;
     position: relative;
+    .item-container {
+      height: 370px;
+      overflow: auto;
+    }
   }
   .members-search {
     position: absolute;

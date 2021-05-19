@@ -25144,7 +25144,7 @@ module.exports = ReactDOMInvalidARIAHook;
 
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+		value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -25168,164 +25168,243 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var _class = function (_Component) {
-	_inherits(_class, _Component);
+		_inherits(_class, _Component);
 
-	function _class() {
-		_classCallCheck(this, _class);
+		function _class() {
+				_classCallCheck(this, _class);
 
-		var _this = _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).call(this));
+				var _this = _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).call(this));
 
-		_this.keywordKey = 'id';
-		_this.keywordLabel = 'name';
-		_this.keywordDir = 'isDir';
+				_this.keywordKey = 'sId';
+				_this.keywordLabel = 'sName';
+				_this.keywordDir = 'isDir';
 
-		_this.changeCb = function (checkedIds, checkedObj) {
-			console.log(checkedIds, checkedObj);
-		};
+				_this.changeCb = function (checkedIds, checkedObj) {
+						console.log(checkedIds, checkedObj);
+				};
 
-		_this.itemRender = function (item) {
-			return _react2.default.createElement(
-				'div',
-				null,
-				_react2.default.createElement('img', { src: item.icon, style: { borderRadius: '50%', height: '20px', marginRight: '5px' } }),
-				item[_this.keywordLabel]
-			);
-		};
+				_this.itemRender = function (item) {
+						return _react2.default.createElement(
+								'div',
+								null,
+								_react2.default.createElement('img', { src: item.icon, style: { borderRadius: '50%', height: '20px', marginRight: '5px' } }),
+								item[_this.keywordLabel]
+						);
+				};
 
-		_this.selectedItemRender = function (item) {
-			return _react2.default.createElement(
-				'div',
-				{ key: item[_this.keywordKey], style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '30px' } },
-				_react2.default.createElement(
-					'div',
-					null,
-					_react2.default.createElement('img', { src: item.icon, style: { borderRadius: '50%', height: '20px', marginRight: '5px' } }),
-					item[_this.keywordLabel]
-				),
-				_react2.default.createElement(
-					'span',
-					{ style: { cursor: 'pointer' }, onClick: function onClick() {
-							return _this.treeComp.handleCheckToggle(item);
-						} },
-					'X'
-				)
-			);
-		};
+				_this.selectedItemRender = function (item) {
+						return _react2.default.createElement(
+								'div',
+								{ key: item[_this.keywordKey], style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '30px' } },
+								_react2.default.createElement(
+										'div',
+										null,
+										_react2.default.createElement('img', { src: item.icon, style: { borderRadius: '50%', height: '20px', marginRight: '5px' } }),
+										item[_this.keywordLabel]
+								),
+								_react2.default.createElement(
+										'span',
+										{ style: { cursor: 'pointer' }, onClick: function onClick() {
+														return _this.treeComp.handleCheckToggle(item);
+												} },
+										'X'
+								)
+						);
+				};
 
-		_this.searchRender = function () {
-			return _react2.default.createElement(
-				'select',
-				{ value: '', placeholder: '', onChange: function onChange() {
-						return _this.treeComp.handleCheckToggle({
-							id: 5,
-							name: "Grand Child 1",
-							icon: 'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/BB12cKGd.img'
-						}, true);
-					} },
-				_react2.default.createElement(
-					'option',
-					{ value: '' },
-					'--\u9009\u62E9--'
-				),
-				_react2.default.createElement(
-					'option',
-					{ value: '5' },
-					'555555'
-				)
-			);
-		};
+				_this.searchRender = function () {
+						return _react2.default.createElement(
+								'select',
+								{ value: '', placeholder: '', onChange: function onChange() {
+												return _this.treeComp.handleCheckToggle({
+														id: 5,
+														name: "Grand Child 1",
+														icon: 'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/BB12cKGd.img'
+												}, true);
+										} },
+								_react2.default.createElement(
+										'option',
+										{ value: '' },
+										'--\u9009\u62E9--'
+								),
+								_react2.default.createElement(
+										'option',
+										{ value: '5' },
+										'555555'
+								)
+						);
+				};
 
-		_this.onRef = function (ref) {
-			_this.treeComp = ref;
-		};
+				_this.onRef = function (ref) {
+						_this.treeComp = ref;
+				};
 
-		_this.state = {
-			data: []
-		};
-		return _this;
-	}
-
-	_createClass(_class, [{
-		key: 'componentDidMount',
-		value: function componentDidMount() {
-			var _this2 = this;
-
-			setTimeout(function () {
-				_this2.setState({
-					data: [{
-						id: 2,
-						name: 'Check/uncheck all children',
-						icon: '',
-						isDir: true,
-						children: [{
-							id: 21,
-							name: 'Child 1',
-							icon: '',
-							isDir: true,
-							children: [{
-								id: 5,
-								name: "Grand Child 1",
-								icon: 'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/BB12cKGd.img'
-							}, {
-								id: 6,
-								name: "Grand Child 2",
-								icon: 'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/BB12cKGd.img'
-							}, {
-								id: 7,
-								name: "Grand Child 3",
-								icon: 'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/BB12cKGd.img'
-							}, {
-								id: 8,
-								name: "Grand Child 4",
-								icon: 'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/BB12cKGd.img'
-							}]
-						}, {
-							id: 22,
-							name: 'Child 2',
-							icon: 'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/BB12cKGd.img'
-						}, {
-							id: 23,
-							name: 'Child 3',
-							icon: 'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/BB12cKGd.img'
-						}, {
-							id: 24,
-							name: 'Child 4',
-							icon: '',
-							isDir: true
-						}]
-					}]
-				});
-			}, 1000);
+				_this.state = {
+						data: []
+				};
+				return _this;
 		}
-	}, {
-		key: 'render',
-		value: function render() {
-			return _react2.default.createElement(
-				'div',
-				null,
-				_react2.default.createElement(_main2.default, {
-					onRef: this.onRef,
-					data: this.state.data,
-					defaultIds: [5],
-					defaultObj: { 5: {
-							id: 5,
-							name: "Grand Child 1",
-							icon: 'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/BB12cKGd.img'
-						} },
-					keywordKey: this.keywordKey,
-					keywordLabel: this.keywordLabel,
-					keywordDir: this.keywordDir,
-					noChildrenAvailableMessage: '\u6CA1\u6709\u6570\u636E',
-					onChangeCb: this.changeCb,
-					itemRender: this.itemRender,
-					selectedItemRender: this.selectedItemRender,
-					searchRender: this.searchRender
-				})
-			);
-		}
-	}]);
 
-	return _class;
+		_createClass(_class, [{
+				key: 'componentDidMount',
+				value: function componentDidMount() {
+						var _this2 = this;
+
+						setTimeout(function () {
+								_this2.setState({
+										data: [{
+												"sId": "1",
+												"sName": "武汉守明科技有限公司",
+												"isDir": true,
+												"sParentId": "",
+												"children": [{
+														"sId": "2",
+														"sName": "后台",
+														"isDir": true,
+														"sParentId": "1"
+												}, {
+														"sId": "3",
+														"sName": "产品",
+														"isDir": true,
+														"sParentId": "1"
+												}, {
+														"sId": "4",
+														"sName": "测试",
+														"isDir": true,
+														"sParentId": "1"
+												}, {
+														"sId": "6",
+														"sName": "前端按时啊",
+														"isDir": true,
+														"sParentId": "1",
+														"children": [{
+																"sId": "7",
+																"sName": "二位",
+																"isDir": true,
+																"sParentId": "6"
+														}]
+												}, {
+														"sId": "22Ban",
+														"sName": "阮星星",
+														"isDir": false
+												}, {
+														"sId": "BaJiuZhiShi",
+														"sName": "八九之十💙",
+														"isDir": false
+												}, {
+														"sId": "cd",
+														"sName": "肖李宗",
+														"isDir": false
+												}, {
+														"sId": "DaLong",
+														"sName": "一个夏天",
+														"isDir": false
+												}, {
+														"sId": "DanDan",
+														"sName": "旦旦",
+														"isDir": false
+												}, {
+														"sId": "FangSong",
+														"sName": "老房",
+														"isDir": false
+												}, {
+														"sId": "FeiSheHuiXingDongWu",
+														"sName": "姚晟",
+														"isDir": false
+												}, {
+														"sId": "GengGeng",
+														"sName": "耿奥",
+														"isDir": false
+												}, {
+														"sId": "heyz",
+														"sName": "何英泽",
+														"isDir": false
+												}, {
+														"sId": "jxeng",
+														"sName": "江雪锋",
+														"isDir": false
+												}, {
+														"sId": "LiangWenliangwen",
+														"sName": "liangwen 良文",
+														"isDir": false
+												}, {
+														"sId": "LiPengKun",
+														"sName": "李老师",
+														"isDir": false
+												}, {
+														"sId": "lynetteZhiZhi",
+														"sName": "Lynette之之",
+														"isDir": false
+												}, {
+														"sId": "po",
+														"sName": "周腾达",
+														"isDir": false
+												}, {
+														"sId": "sunny",
+														"sName": "董美美",
+														"isDir": false
+												}, {
+														"sId": "XiaoHei",
+														"sName": "石洋",
+														"isDir": false
+												}, {
+														"sId": "XiaoQi",
+														"sName": "汪家晗",
+														"isDir": false
+												}, {
+														"sId": "XingHua",
+														"sName": "程兴华",
+														"isDir": false
+												}, {
+														"sId": "XueJiaQi",
+														"sName": "薛嘉琪",
+														"isDir": false
+												}, {
+														"sId": "YingZhiSen",
+														"sName": "吴廷宇",
+														"isDir": false
+												}, {
+														"sId": "YunDago",
+														"sName": "云鹏",
+														"isDir": false
+												}, {
+														"sId": "ZhiZhi",
+														"sName": "邓靖之",
+														"isDir": false
+												}]
+										}]
+								});
+						}, 1000);
+				}
+		}, {
+				key: 'render',
+				value: function render() {
+						return _react2.default.createElement(
+								'div',
+								null,
+								_react2.default.createElement(_main2.default, {
+										onRef: this.onRef,
+										data: this.state.data,
+										defaultIds: [5],
+										defaultObj: { 5: {
+														sId: 5,
+														sName: "Grand Child 1",
+														icon: 'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/BB12cKGd.img'
+												} },
+										keywordKey: this.keywordKey,
+										keywordLabel: this.keywordLabel,
+										keywordDir: this.keywordDir,
+										noChildrenAvailableMessage: '\u6CA1\u6709\u6570\u636E',
+										onChangeCb: this.changeCb,
+										itemRender: this.itemRender,
+										selectedItemRender: this.selectedItemRender,
+										searchRender: this.searchRender
+								})
+						);
+				}
+		}]);
+
+		return _class;
 }(_react.Component);
 
 exports.default = _class;
@@ -25526,8 +25605,8 @@ var ContactPicker = function (_Component) {
           onChangeCb = _props.onChangeCb;
 
       if (addMode && this.state.checkedObj[node[keywordKey]]) return;
-
       var tmpNode = _extends({}, node);
+      if (tmpNode[keywordKey] === undefined) return;
       delete tmpNode['children'];
 
       var checkedObj = _extends({}, this.state.checkedObj);
@@ -25643,6 +25722,7 @@ var ContactPicker = function (_Component) {
 
       var _props3 = this.props,
           isCheckable = _props3.isCheckable,
+          keywordKey = _props3.keywordKey,
           keywordLabel = _props3.keywordLabel,
           depth = _props3.depth;
 
@@ -25654,8 +25734,8 @@ var ContactPicker = function (_Component) {
           onClick: function onClick() {
             _this2.handleCheckToggle(node, false);
           },
-          checked: !!this.state.checkedObj[node.id],
-          id: node.id
+          checked: !!this.state.checkedObj[node[keywordKey]],
+          id: node[keywordKey]
         });
       }
     }
@@ -25776,12 +25856,12 @@ var ContactPicker = function (_Component) {
       }) || [];
 
       var allChecked = checkableChildren.length > 0 && !checkableChildren.some(function (item) {
-        return !checkedObj[item.id];
+        return !checkedObj[item[keywordKey]];
       });
 
       return _react2.default.createElement(
         _reactTransitionGroup.TransitionGroup,
-        { className: 'list' },
+        { className: 'contact-list' },
         _react2.default.createElement(
           _reactTransitionGroup.CSSTransition,
           nodeTransitionProps,
@@ -25824,36 +25904,40 @@ var ContactPicker = function (_Component) {
             )
           )
         ),
-        (0, _isEmpty2.default)(nodeArray) ? this.printNoChildrenMessage() : nodes.map(function (node, index) {
-          var isDir = (0, _get2.default)(node, keywordDir, false);
+        _react2.default.createElement(
+          'div',
+          { className: 'item-container' },
+          (0, _isEmpty2.default)(nodeArray) ? this.printNoChildrenMessage() : nodes.map(function (node, index) {
+            var isDir = (0, _get2.default)(node, keywordDir, false);
 
-          return _react2.default.createElement(
-            _reactTransitionGroup.CSSTransition,
-            _extends({}, nodeTransitionProps, {
-              key: node[keywordKey] || index
-            }),
-            _react2.default.createElement(
-              'div',
-              {
-                className: 'contact-node' + getStyleClassCb(node),
-                onClick: function onClick() {
-                  return nodeClick(node);
-                }
-              },
+            return _react2.default.createElement(
+              _reactTransitionGroup.CSSTransition,
+              _extends({}, nodeTransitionProps, {
+                key: node[keywordKey] || index
+              }),
               _react2.default.createElement(
                 'div',
-                { className: 'contact-node-content' },
+                {
+                  className: 'contact-node' + getStyleClassCb(node),
+                  onClick: function onClick() {
+                    return nodeClick(node);
+                  }
+                },
                 _react2.default.createElement(
-                  'label',
-                  { className: 'contact-checkbox' },
-                  !isDir && printCheckbox(node, depth),
-                  itemRender(node),
-                  !isDir && _react2.default.createElement('span', { className: 'contact-checkbox-mark' })
+                  'div',
+                  { className: 'contact-node-content' },
+                  _react2.default.createElement(
+                    'label',
+                    { className: 'contact-checkbox' },
+                    !isDir && printCheckbox(node, depth),
+                    itemRender(node),
+                    !isDir && _react2.default.createElement('span', { className: 'contact-checkbox-mark' })
+                  )
                 )
               )
-            )
-          );
-        })
+            );
+          })
+        )
       );
     }
   }, {
@@ -25868,7 +25952,7 @@ var ContactPicker = function (_Component) {
 
       return _react2.default.createElement(
         'div',
-        { className: 'members' },
+        { className: 'contact-members' },
         _react2.default.createElement(
           'div',
           { className: 'members-search' },
@@ -25889,9 +25973,13 @@ var ContactPicker = function (_Component) {
             '\u6E05\u7A7A'
           )
         ),
-        checkedIds.map(function (id) {
-          return selectedItemRender(checkedObj[id]);
-        })
+        _react2.default.createElement(
+          'div',
+          { className: 'item-container' },
+          checkedIds.map(function (id) {
+            return selectedItemRender(checkedObj[id]);
+          })
+        )
       );
     }
   }, {
@@ -29918,7 +30006,7 @@ if(false) {
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(341);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "label {\n  font-weight: normal; }\n\n.contact-checkbox {\n  position: relative;\n  cursor: pointer;\n  padding-left: 23px;\n  user-select: none; }\n\n.contact-checkbox input {\n  position: absolute;\n  opacity: 0;\n  top: 0;\n  left: 0;\n  height: 0;\n  width: 0; }\n\n.contact-checkbox-mark {\n  position: absolute;\n  top: 2px;\n  left: 0;\n  height: 18px;\n  width: 18px;\n  background-color: #fff;\n  border: 1px solid rgba(0, 0, 0, 0.2); }\n\n.contact-checkbox-mark::after {\n  content: \"\";\n  position: absolute;\n  display: none;\n  left: 5px;\n  top: 1px;\n  width: 6px;\n  height: 11px;\n  border: solid white;\n  border-width: 0 2px 2px 0;\n  -webkit-transform: rotate(45deg);\n  -ms-transform: rotate(45deg);\n  transform: rotate(45deg); }\n\ninput:checked ~ .contact-checkbox-mark {\n  background-color: #4d7cfe; }\n\ninput:checked ~ .contact-checkbox-mark::after {\n  display: block; }\n\n.contact {\n  display: flex; }\n\n.contact .list {\n  flex: 3; }\n\n.contact .members {\n  flex: 2;\n  min-height: 400px;\n  border-left: 1px solid rgba(0, 0, 0, 0.2);\n  margin-top: 50px;\n  margin-left: 20px;\n  padding-left: 20px;\n  position: relative; }\n\n.contact .members-search {\n  position: absolute;\n  left: 20px;\n  top: -40px; }\n\n.contact .members-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between; }\n\n.contact .members-header .clear {\n  color: #4d7cfe;\n  cursor: pointer; }\n\n.contact * {\n  box-sizing: border-box;\n  -webkit-box-sizing: border-box; }\n\n.contact-header .root-name {\n  font-size: 18px;\n  cursor: pointer; }\n\n.contact-header .curr-name {\n  display: flex;\n  justify-content: space-between;\n  font-size: 14px;\n  line-height: 22px;\n  cursor: pointer; }\n\n.contact-header .curr-name .back {\n  color: #4d7cfe; }\n\n.contact {\n  font-size: 100%; }\n\n.contact > div > .contact-no-children-transition {\n  transition-property: all; }\n\n.contact > div > .contact-no-children-transition-enter {\n  opacity: 0;\n  height: 0;\n  overflow: hidden; }\n\n.contact > div > .contact-no-children-transition-enter.contact-no-children-transition-enter-active {\n  opacity: 1;\n  height: 0; }\n\n.contact > div > .contact-no-children {\n  overflow: hidden; }\n\n.contact > div > .contact-no-children > .contact-no-children-content {\n  margin: 2px 0; }\n\n.contact > div > .contact-node {\n  overflow: hidden; }\n\n.contact > div > .contact-node > .contact-children-container {\n  margin-left: 8px;\n  padding-left: 20px; }\n\n.contact > div > .contact-node > .contact-children-container > .contact-loading {\n  padding: 0 3px;\n  margin: 2px 0; }\n\n.contact > div > .contact-node > .contact-node-content {\n  margin: 5px 0;\n  height: 22px;\n  line-height: 22px;\n  position: relative; }\n\n.contact > div > .contact-node > .contact-node-content > label {\n  vertical-align: top;\n  text-overflow: ellipsis;\n  width: calc(100% - 55px);\n  overflow: hidden;\n  white-space: nowrap;\n  display: inline-block;\n  margin: 0;\n  font-weight: normal;\n  font-size: 100%;\n  user-select: none; }\n\n.contact > div > .contact-node > .contact-node-content > .contact-triangle-btn {\n  float: left;\n  margin-right: 5px;\n  cursor: pointer; }\n\n.contact > div > .contact-node > .contact-node-content > .contact-triangle-btn-none {\n  cursor: none; }\n\n.contact > div > .contact-node > .contact-node-content > .contact-triangle-btn-right {\n  width: 8px;\n  height: 10px;\n  margin-top: 2px;\n  margin-left: 2px;\n  border-top: 5px solid transparent;\n  border-left: 6px solid #000;\n  border-bottom: 5px solid transparent; }\n\n.contact > div > .contact-node > .contact-node-content > .contact-triangle-btn-down {\n  width: 10px;\n  height: 8px;\n  margin-top: 5px;\n  border-left: 5px solid transparent;\n  border-right: 5px solid transparent;\n  border-top: 6px solid #000; }\n\n.contact > div > .contact-node > .contact-node-content > .delete-btn {\n  float: right;\n  cursor: pointer; }\n\n.contact > div > .contact-node-transition {\n  transition-property: all; }\n\n.contact > div > .contact-node-transition-enter {\n  opacity: 0; }\n\n.contact > div > .contact-node-transition-enter.contact-node-transition-enter-active {\n  opacity: 1; }\n\n.contact > div > .contact-node-transition-exit {\n  display: block; }\n\n.contact > div > .contact-node-transition-exit.contact-node-transition-exit-active {\n  display: none; }\n", ""]);
+exports.push([module.i, "label {\n  font-weight: normal; }\n\n.contact-checkbox {\n  position: relative;\n  cursor: pointer;\n  padding-left: 23px;\n  user-select: none; }\n\n.contact-checkbox input {\n  position: absolute;\n  opacity: 0;\n  top: 0;\n  left: 0;\n  height: 0;\n  width: 0; }\n\n.contact-checkbox-mark {\n  position: absolute;\n  top: 2px;\n  left: 0;\n  height: 18px;\n  width: 18px;\n  background-color: #fff;\n  border: 1px solid rgba(0, 0, 0, 0.2); }\n\n.contact-checkbox-mark::after {\n  content: \"\";\n  position: absolute;\n  display: none;\n  left: 5px;\n  top: 1px;\n  width: 6px;\n  height: 11px;\n  border: solid white;\n  border-width: 0 2px 2px 0;\n  -webkit-transform: rotate(45deg);\n  -ms-transform: rotate(45deg);\n  transform: rotate(45deg); }\n\ninput:checked ~ .contact-checkbox-mark {\n  background-color: #4d7cfe; }\n\ninput:checked ~ .contact-checkbox-mark::after {\n  display: block; }\n\n.contact {\n  display: flex; }\n\n.contact .contact-list {\n  flex: 3; }\n\n.contact .contact-list .item-container {\n  height: 400px;\n  overflow: auto; }\n\n.contact .contact-members {\n  flex: 2;\n  border-left: 1px solid rgba(0, 0, 0, 0.2);\n  margin-top: 50px;\n  padding-left: 20px;\n  position: relative; }\n\n.contact .contact-members .item-container {\n  height: 370px;\n  overflow: auto; }\n\n.contact .members-search {\n  position: absolute;\n  left: 20px;\n  top: -40px; }\n\n.contact .members-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between; }\n\n.contact .members-header .clear {\n  color: #4d7cfe;\n  cursor: pointer; }\n\n.contact * {\n  box-sizing: border-box;\n  -webkit-box-sizing: border-box; }\n\n.contact-header .root-name {\n  font-size: 18px;\n  cursor: pointer; }\n\n.contact-header .curr-name {\n  display: flex;\n  justify-content: space-between;\n  font-size: 14px;\n  line-height: 22px;\n  cursor: pointer; }\n\n.contact-header .curr-name .back {\n  color: #4d7cfe; }\n\n.contact {\n  font-size: 100%; }\n\n.contact > div > .contact-no-children-transition {\n  transition-property: all; }\n\n.contact > div > .contact-no-children-transition-enter {\n  opacity: 0;\n  height: 0;\n  overflow: hidden; }\n\n.contact > div > .contact-no-children-transition-enter.contact-no-children-transition-enter-active {\n  opacity: 1;\n  height: 0; }\n\n.contact > div > .contact-no-children {\n  overflow: hidden; }\n\n.contact > div > .contact-no-children > .contact-no-children-content {\n  margin: 2px 0; }\n\n.contact > div > .contact-node {\n  overflow: hidden; }\n\n.contact > div > .contact-node > .contact-children-container {\n  margin-left: 8px;\n  padding-left: 20px; }\n\n.contact > div > .contact-node > .contact-children-container > .contact-loading {\n  padding: 0 3px;\n  margin: 2px 0; }\n\n.contact > div > .contact-node > .contact-node-content {\n  margin: 5px 0;\n  height: 22px;\n  line-height: 22px;\n  position: relative; }\n\n.contact > div > .contact-node > .contact-node-content > label {\n  vertical-align: top;\n  text-overflow: ellipsis;\n  width: calc(100% - 55px);\n  overflow: hidden;\n  white-space: nowrap;\n  display: inline-block;\n  margin: 0;\n  font-weight: normal;\n  font-size: 100%;\n  user-select: none; }\n\n.contact > div > .contact-node > .contact-node-content > .contact-triangle-btn {\n  float: left;\n  margin-right: 5px;\n  cursor: pointer; }\n\n.contact > div > .contact-node > .contact-node-content > .contact-triangle-btn-none {\n  cursor: none; }\n\n.contact > div > .contact-node > .contact-node-content > .contact-triangle-btn-right {\n  width: 8px;\n  height: 10px;\n  margin-top: 2px;\n  margin-left: 2px;\n  border-top: 5px solid transparent;\n  border-left: 6px solid #000;\n  border-bottom: 5px solid transparent; }\n\n.contact > div > .contact-node > .contact-node-content > .contact-triangle-btn-down {\n  width: 10px;\n  height: 8px;\n  margin-top: 5px;\n  border-left: 5px solid transparent;\n  border-right: 5px solid transparent;\n  border-top: 6px solid #000; }\n\n.contact > div > .contact-node > .contact-node-content > .delete-btn {\n  float: right;\n  cursor: pointer; }\n\n.contact > div > .contact-node-transition {\n  transition-property: all; }\n\n.contact > div > .contact-node-transition-enter {\n  opacity: 0; }\n\n.contact > div > .contact-node-transition-enter.contact-node-transition-enter-active {\n  opacity: 1; }\n\n.contact > div > .contact-node-transition-exit {\n  display: block; }\n\n.contact > div > .contact-node-transition-exit.contact-node-transition-exit-active {\n  display: none; }\n", ""]);
 // Exports
 module.exports = exports;
 
