@@ -10,7 +10,7 @@ label {
 .contact-checkbox {
   position: relative;
   cursor: pointer;
-  padding-left: 23px;
+  padding-left: 20px;
   user-select: none;
   input {
     position: absolute;
@@ -22,18 +22,18 @@ label {
   }
   &-mark {
     position: absolute;
-    top: 2px;
+    top: 3px;
     left: 0;
-    height: 18px;
-    width: 18px;
+    height: 15px;
+    width: 15px;
     background-color: #fff;
     border: 1px solid rgba(0,0,0,0.2);
     &::after {
       content: "";
       position: absolute;
       display: none;
-      left: 5px;
-      top: 1px;
+      left: 4px;
+      top: 0px;
       width: 6px;
       height: 11px;
       border: solid white;

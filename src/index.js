@@ -28,6 +28,7 @@ class ContactPicker extends Component {
 
     this.printCheckbox = this.printCheckbox.bind(this);
     this.printNoChildrenMessage = this.printNoChildrenMessage.bind(this);
+    this.printLoadingMessage = this.printLoadingMessage.bind(this);
 
     this.handleCheckToggle = this.handleCheckToggle.bind(this);
     this.handleCheckAllToggle = this.handleCheckAllToggle.bind(this);
@@ -171,14 +172,14 @@ class ContactPicker extends Component {
     const {
       noChildrenAvailableMessage
     } = this.props;
-    this.printMessage(noChildrenAvailableMessage)
+    return this.printMessage(noChildrenAvailableMessage)
   }
 
   printLoadingMessage() {
     const {
       loadingMessage
     } = this.props;
-    this.printMessage(loadingMessage)
+    return this.printMessage(loadingMessage)
   }
 
   nodeClick(node) {
@@ -285,9 +286,9 @@ class ContactPicker extends Component {
           </CSSTransition>
         </TransitionGroup>
         <div className="item-container">
-        {isEmpty(nodeArray)
+        {isEmpty(nodeArray) || nodeArray.lenght === 0
           ? this.printNoChildrenMessage()
-          : this.state.loading ? '正在加载'
+          : this.state.loading ? this.printLoadingMessage()
           : nodes.map((node, index) => {
             const isDir = get(node, keywordDir, false);
 
@@ -358,8 +359,8 @@ ContactPicker.propTypes = {
   keywordLabel: PropTypes.string,
   keywordDir: PropTypes.string,
 
-  loadingElement: PropTypes.element,
-  noChildrenAvailableMessage: PropTypes.string,
+  loadingMessage: PropTypes.element,
+  noChildrenAvailableMessage: PropTypes.element,
 
   onUpdateCb: PropTypes.func,
   onChangeCb: PropTypes.func,

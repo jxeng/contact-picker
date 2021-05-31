@@ -178,18 +178,18 @@ export default class extends Component {
 		console.log(item)
 		if (!item.isDir) return;
 		return new Promise(resolve => setTimeout(resolve, 1000)).then(() => ([
-				{
-					"sId": "1117",
-					"sName": "22二位",
-					"isDir": false,
-					"sParentId": "2"
-				},
-				{
-					"sId": "1118",
-					"sName": "11二位",
-					"isDir": false,
-					"sParentId": "2"
-				}
+				// {
+				// 	"sId": "1117",
+				// 	"sName": "22二位",
+				// 	"isDir": false,
+				// 	"sParentId": "2"
+				// },
+				// {
+				// 	"sId": "1118",
+				// 	"sName": "11二位",
+				// 	"isDir": false,
+				// 	"sParentId": "2"
+				// }
 			]))
 	}
 
@@ -240,7 +240,8 @@ export default class extends Component {
             keywordKey={this.keywordKey}
             keywordLabel={this.keywordLabel}
             keywordDir={this.keywordDir}
-            noChildrenAvailableMessage="没有数据"
+            loadingMessage={<span style={{color: 'red'}}>加载中</span>}
+            noChildrenAvailableMessage={<span style={{color: 'red'}}>没有数据</span>}
             onChangeCb={this.changeCb}
             onUpdateCb={this.updateCb}
             itemRender={this.itemRender}
