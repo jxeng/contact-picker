@@ -25184,7 +25184,7 @@ var _main = __webpack_require__(241);
 
 var _main2 = _interopRequireDefault(_main);
 
-__webpack_require__(340);
+__webpack_require__(345);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25311,7 +25311,8 @@ var _class = function (_Component) {
 														"sId": "2",
 														"sName": "后台",
 														"isDir": true,
-														"sParentId": "1"
+														"sParentId": "1",
+														"children": [{ "sId": "FengZhongJinCao", "sName": "王强😀", "vDepId": ["2"] }]
 												}, {
 														"sId": "3",
 														"sName": "产品",
@@ -25666,14 +25667,15 @@ var ContactPicker = function (_Component) {
       var addMode = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
       var _props = this.props,
           keywordKey = _props.keywordKey,
-          onChangeCb = _props.onChangeCb;
+          onChangeCb = _props.onChangeCb,
+          isCheckBox = _props.isCheckBox;
 
       if (addMode && this.state.checkedObj[node[keywordKey]]) return;
       var tmpNode = _extends({}, node);
       if (tmpNode[keywordKey] === undefined) return;
       delete tmpNode['children'];
 
-      var checkedObj = _extends({}, this.state.checkedObj);
+      var checkedObj = isCheckBox ? _extends({}, this.state.checkedObj) : {};
       var checkedIds = [];
 
       if (!this.state.checkedObj[tmpNode[keywordKey]]) {
@@ -25683,7 +25685,7 @@ var ContactPicker = function (_Component) {
       }
 
       if (!this.state.checkedIds.includes(tmpNode[keywordKey])) {
-        checkedIds = [].concat(_toConsumableArray(this.state.checkedIds), [tmpNode[keywordKey]]);
+        checkedIds = isCheckBox ? [].concat(_toConsumableArray(this.state.checkedIds), [tmpNode[keywordKey]]) : [tmpNode[keywordKey]];
       } else {
         var _iteratorNormalCompletion = true;
         var _didIteratorError = false;
@@ -25894,6 +25896,7 @@ var ContactPicker = function (_Component) {
       var nodes = (0, _cloneDeep2.default)(nodeArray);
 
       var _props5 = this.props,
+          isCheckBox = _props5.isCheckBox,
           keywordKey = _props5.keywordKey,
           keywordLabel = _props5.keywordLabel,
           keywordDir = _props5.keywordDir,
@@ -25966,7 +25969,9 @@ var ContactPicker = function (_Component) {
                   _react2.default.createElement('input', {
                     type: 'checkbox',
                     onClick: function onClick() {
-                      _this4.handleCheckAllToggle(currNode.children, allChecked);
+                      if (isCheckBox) {
+                        _this4.handleCheckAllToggle(currNode.children, allChecked);
+                      }
                     },
                     checked: allChecked,
                     onChange: function onChange() {}
@@ -25975,7 +25980,7 @@ var ContactPicker = function (_Component) {
                   '(',
                   checkableChildren.length,
                   ')',
-                  _react2.default.createElement('span', { className: 'contact-checkbox-mark' })
+                  isCheckBox ? _react2.default.createElement('span', { className: 'contact-checkbox-mark' }) : null
                 ),
                 _react2.default.createElement(
                   'span',
@@ -26087,6 +26092,7 @@ ContactPicker.propTypes = {
   getStyleClassCb: _propTypes2.default.func,
 
   isCheckable: _propTypes2.default.func,
+  isCheckBox: _propTypes2.default.bool,
   isDeletable: _propTypes2.default.func,
   isExpandable: _propTypes2.default.func,
 
@@ -26124,6 +26130,7 @@ ContactPicker.defaultProps = {
   isCheckable: function isCheckable() /* node, depth */{
     return true;
   },
+  isCheckBox: true,
   isDeletable: function isDeletable() /* node, depth */{
     return false;
   },
@@ -47244,50 +47251,8 @@ function getNextChildMapping(nextProps, prevChildMapping, onExited) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(118), __webpack_require__(43)(module)))
 
 /***/ }),
-/* 340 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(341);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(343)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../node_modules/_css-loader@3.6.0@css-loader/dist/cjs.js!../node_modules/_sass-loader@6.0.7@sass-loader/lib/loader.js!./style.css", function() {
-			var newContent = require("!!../node_modules/_css-loader@3.6.0@css-loader/dist/cjs.js!../node_modules/_sass-loader@6.0.7@sass-loader/lib/loader.js!./style.css");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 341 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(342);
-exports = ___CSS_LOADER_API_IMPORT___(false);
-// Module
-exports.push([module.i, "label {\n  font-weight: normal; }\n\n.contact-checkbox {\n  position: relative;\n  cursor: pointer;\n  padding-left: 20px;\n  user-select: none; }\n\n.contact-checkbox input {\n  position: absolute;\n  opacity: 0;\n  top: 0;\n  left: 0;\n  height: 0;\n  width: 0; }\n\n.contact-checkbox-mark {\n  position: absolute;\n  top: 4px;\n  left: 0;\n  height: 15px;\n  width: 15px;\n  background-color: #fff;\n  border: 1px solid rgba(0, 0, 0, 0.2); }\n\n.contact-checkbox-mark::after {\n  content: \"\";\n  position: absolute;\n  display: none;\n  left: 4px;\n  top: 0px;\n  width: 6px;\n  height: 11px;\n  border: solid white;\n  border-width: 0 2px 2px 0;\n  -webkit-transform: rotate(45deg);\n  -ms-transform: rotate(45deg);\n  transform: rotate(45deg); }\n\ninput:checked ~ .contact-checkbox-mark {\n  background-color: #4d7cfe; }\n\ninput:checked ~ .contact-checkbox-mark::after {\n  display: block; }\n\n.contact {\n  display: flex; }\n\n.contact .contact-list {\n  flex: 3; }\n\n.contact .contact-list .item-container {\n  height: 400px;\n  overflow: auto; }\n\n.contact .contact-members {\n  flex: 2;\n  border-left: 1px solid rgba(0, 0, 0, 0.2);\n  margin-top: 50px;\n  padding-left: 20px;\n  position: relative; }\n\n.contact .contact-members .item-container {\n  height: 370px;\n  overflow: auto; }\n\n.contact .members-search {\n  position: absolute;\n  left: 20px;\n  top: -40px; }\n\n.contact .members-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between; }\n\n.contact .members-header .clear {\n  color: #4d7cfe;\n  cursor: pointer; }\n\n.contact * {\n  box-sizing: border-box;\n  -webkit-box-sizing: border-box; }\n\n.contact-header .root-name {\n  font-size: 18px;\n  cursor: pointer; }\n\n.contact-header .curr-name {\n  display: flex;\n  justify-content: space-between;\n  font-size: 14px;\n  line-height: 22px;\n  cursor: pointer; }\n\n.contact-header .curr-name .back {\n  color: #4d7cfe; }\n\n.contact {\n  font-size: 100%; }\n\n.contact > div > .contact-no-children-transition {\n  transition-property: all; }\n\n.contact > div > .contact-no-children-transition-enter {\n  opacity: 0;\n  height: 0;\n  overflow: hidden; }\n\n.contact > div > .contact-no-children-transition-enter.contact-no-children-transition-enter-active {\n  opacity: 1;\n  height: 0; }\n\n.contact > div > .contact-no-children {\n  overflow: hidden; }\n\n.contact > div > .contact-no-children > .contact-no-children-content {\n  margin: 2px 0; }\n\n.contact > div > .contact-node {\n  overflow: hidden; }\n\n.contact > div > .contact-node > .contact-children-container {\n  margin-left: 8px;\n  padding-left: 20px; }\n\n.contact > div > .contact-node > .contact-children-container > .contact-loading {\n  padding: 0 3px;\n  margin: 2px 0; }\n\n.contact > div > .contact-node > .contact-node-content {\n  margin: 5px 0;\n  height: 22px;\n  line-height: 22px;\n  position: relative; }\n\n.contact > div > .contact-node > .contact-node-content > label {\n  vertical-align: top;\n  text-overflow: ellipsis;\n  width: calc(100% - 55px);\n  overflow: hidden;\n  white-space: nowrap;\n  display: inline-block;\n  margin: 0;\n  font-weight: normal;\n  font-size: 100%;\n  user-select: none; }\n\n.contact > div > .contact-node > .contact-node-content > .contact-triangle-btn {\n  float: left;\n  margin-right: 5px;\n  cursor: pointer; }\n\n.contact > div > .contact-node > .contact-node-content > .contact-triangle-btn-none {\n  cursor: none; }\n\n.contact > div > .contact-node > .contact-node-content > .contact-triangle-btn-right {\n  width: 8px;\n  height: 10px;\n  margin-top: 2px;\n  margin-left: 2px;\n  border-top: 5px solid transparent;\n  border-left: 6px solid #000;\n  border-bottom: 5px solid transparent; }\n\n.contact > div > .contact-node > .contact-node-content > .contact-triangle-btn-down {\n  width: 10px;\n  height: 8px;\n  margin-top: 5px;\n  border-left: 5px solid transparent;\n  border-right: 5px solid transparent;\n  border-top: 6px solid #000; }\n\n.contact > div > .contact-node > .contact-node-content > .delete-btn {\n  float: right;\n  cursor: pointer; }\n\n.contact > div > .contact-node-transition {\n  transition-property: all; }\n\n.contact > div > .contact-node-transition-enter {\n  opacity: 0; }\n\n.contact > div > .contact-node-transition-enter.contact-node-transition-enter-active {\n  opacity: 1; }\n\n.contact > div > .contact-node-transition-exit {\n  display: block; }\n\n.contact > div > .contact-node-transition-exit.contact-node-transition-exit-active {\n  display: none; }\n", ""]);
-// Exports
-module.exports = exports;
-
-
-/***/ }),
+/* 340 */,
+/* 341 */,
 /* 342 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -47839,6 +47804,50 @@ module.exports = function (css) {
 	// send back the fixed css
 	return fixedCss;
 };
+
+
+/***/ }),
+/* 345 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(346);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(343)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../node_modules/_css-loader@3.6.0@css-loader/dist/cjs.js!../node_modules/_sass-loader@6.0.7@sass-loader/lib/loader.js!./style.css", function() {
+			var newContent = require("!!../node_modules/_css-loader@3.6.0@css-loader/dist/cjs.js!../node_modules/_sass-loader@6.0.7@sass-loader/lib/loader.js!./style.css");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 346 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// Imports
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(342);
+exports = ___CSS_LOADER_API_IMPORT___(false);
+// Module
+exports.push([module.i, "label {\n  font-weight: normal; }\n\n.contact-checkbox {\n  position: relative;\n  cursor: pointer;\n  padding-left: 20px;\n  user-select: none; }\n\n.contact-checkbox input {\n  position: absolute;\n  opacity: 0;\n  top: 0;\n  left: 0;\n  height: 0;\n  width: 0; }\n\n.contact-checkbox-mark {\n  position: absolute;\n  top: 4px;\n  left: 0;\n  height: 15px;\n  width: 15px;\n  background-color: #fff;\n  border: 1px solid rgba(0, 0, 0, 0.2); }\n\n.contact-checkbox-mark::after {\n  content: \"\";\n  position: absolute;\n  display: none;\n  left: 4px;\n  top: 0px;\n  width: 6px;\n  height: 11px;\n  border: solid white;\n  border-width: 0 2px 2px 0;\n  -webkit-transform: rotate(45deg);\n  -ms-transform: rotate(45deg);\n  transform: rotate(45deg); }\n\ninput:checked ~ .contact-checkbox-mark {\n  background-color: #4d7cfe; }\n\ninput:checked ~ .contact-checkbox-mark::after {\n  display: block; }\n\n.contact {\n  display: flex; }\n\n.contact .contact-list {\n  flex: 3; }\n\n.contact .contact-list .item-container {\n  height: 400px;\n  overflow: auto; }\n\n.contact .contact-members {\n  flex: 2;\n  border-left: 1px solid rgba(0, 0, 0, 0.2);\n  margin-top: 50px;\n  padding-left: 20px;\n  position: relative; }\n\n.contact .contact-members .item-container {\n  height: 370px;\n  overflow: auto; }\n\n.contact .members-search {\n  position: absolute;\n  left: 20px;\n  top: -40px; }\n\n.contact .members-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between; }\n\n.contact .members-header .clear {\n  color: #4d7cfe;\n  cursor: pointer; }\n\n.contact * {\n  box-sizing: border-box;\n  -webkit-box-sizing: border-box; }\n\n.contact-header .root-name {\n  font-size: 18px;\n  cursor: pointer; }\n\n.contact-header .curr-name {\n  display: flex;\n  justify-content: space-between;\n  font-size: 14px;\n  line-height: 22px;\n  cursor: pointer; }\n\n.contact-header .curr-name .back {\n  color: #4d7cfe; }\n\n.contact {\n  font-size: 100%; }\n\n.contact > div > .contact-no-children-transition {\n  transition-property: all; }\n\n.contact > div > .contact-no-children-transition-enter {\n  opacity: 0;\n  height: 0;\n  overflow: hidden; }\n\n.contact > div > .contact-no-children-transition-enter.contact-no-children-transition-enter-active {\n  opacity: 1;\n  height: 0; }\n\n.contact > div > .contact-no-children {\n  overflow: hidden; }\n\n.contact > div > .contact-no-children > .contact-no-children-content {\n  margin: 2px 0; }\n\n.contact > div > .contact-node {\n  overflow: hidden; }\n\n.contact > div > .contact-node > .contact-children-container {\n  margin-left: 8px;\n  padding-left: 20px; }\n\n.contact > div > .contact-node > .contact-children-container > .contact-loading {\n  padding: 0 3px;\n  margin: 2px 0; }\n\n.contact > div > .contact-node > .contact-node-content {\n  margin: 5px 0;\n  height: 22px;\n  line-height: 22px;\n  position: relative; }\n\n.contact > div > .contact-node > .contact-node-content > label {\n  vertical-align: top;\n  text-overflow: ellipsis;\n  width: calc(100% - 55px);\n  overflow: hidden;\n  white-space: nowrap;\n  display: inline-block;\n  margin: 0;\n  font-weight: normal;\n  font-size: 100%;\n  user-select: none; }\n\n.contact > div > .contact-node > .contact-node-content > .contact-triangle-btn {\n  float: left;\n  margin-right: 5px;\n  cursor: pointer; }\n\n.contact > div > .contact-node > .contact-node-content > .contact-triangle-btn-none {\n  cursor: none; }\n\n.contact > div > .contact-node > .contact-node-content > .contact-triangle-btn-right {\n  width: 8px;\n  height: 10px;\n  margin-top: 2px;\n  margin-left: 2px;\n  border-top: 5px solid transparent;\n  border-left: 6px solid #000;\n  border-bottom: 5px solid transparent; }\n\n.contact > div > .contact-node > .contact-node-content > .contact-triangle-btn-down {\n  width: 10px;\n  height: 8px;\n  margin-top: 5px;\n  border-left: 5px solid transparent;\n  border-right: 5px solid transparent;\n  border-top: 6px solid #000; }\n\n.contact > div > .contact-node > .contact-node-content > .delete-btn {\n  float: right;\n  cursor: pointer; }\n\n.contact > div > .contact-node-transition {\n  transition-property: all; }\n\n.contact > div > .contact-node-transition-enter {\n  opacity: 0; }\n\n.contact > div > .contact-node-transition-enter.contact-node-transition-enter-active {\n  opacity: 1; }\n\n.contact > div > .contact-node-transition-exit {\n  display: block; }\n\n.contact > div > .contact-node-transition-exit.contact-node-transition-exit-active {\n  display: none; }\n", ""]);
+// Exports
+module.exports = exports;
 
 
 /***/ })

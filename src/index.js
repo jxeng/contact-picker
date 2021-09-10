@@ -62,13 +62,13 @@ class ContactPicker extends Component {
   }
 
   handleCheckToggle(node, addMode = false) {
-    const { keywordKey, onChangeCb } = this.props;
+    const { keywordKey, onChangeCb, isCheckBox } = this.props;
     if (addMode && this.state.checkedObj[node[keywordKey]]) return;
     const tmpNode = {...node};
     if (tmpNode[keywordKey] === undefined) return;
     delete tmpNode['children'];
 
-    let checkedObj = {...this.state.checkedObj};
+    let checkedObj = isCheckBox ? {...this.state.checkedObj} : {};
     let checkedIds = [];
 
 
@@ -79,7 +79,7 @@ class ContactPicker extends Component {
     }
 
     if (!this.state.checkedIds.includes(tmpNode[keywordKey])) {
-      checkedIds = [...this.state.checkedIds, tmpNode[keywordKey]];
+      checkedIds = isCheckBox ? [...this.state.checkedIds, tmpNode[keywordKey]] : [tmpNode[keywordKey]];
     } else {
       for (const id of this.state.checkedIds) {
         if (id === tmpNode[keywordKey]) continue;
@@ -217,6 +217,7 @@ class ContactPicker extends Component {
     const nodes = cloneDeep(nodeArray);
 
     const {
+      isCheckBox,
       keywordKey,
       keywordLabel,
       keywordDir,
@@ -272,13 +273,15 @@ class ContactPicker extends Component {
                   <input
                     type="checkbox"
                     onClick={() => {
-                      this.handleCheckAllToggle(currNode.children, allChecked);
+                      if (isCheckBox) {
+                        this.handleCheckAllToggle(currNode.children, allChecked);
+                      }
                     }}
                     checked={allChecked}
                     onChange={() => {}}
                   />
                   {currNode[keywordLabel]}({checkableChildren.length})
-                  <span className="contact-checkbox-mark"></span>
+                  {isCheckBox ? <span className="contact-checkbox-mark"></span> : null }
                 </label>
                 <span className="back">{nodePath.length > 1 && <div onClick={goBack}>返回上一级</div>}</span>
               </div>
@@ -350,6 +353,7 @@ ContactPicker.propTypes = {
   getStyleClassCb: PropTypes.func,
 
   isCheckable: PropTypes.func,
+  isCheckBox: PropTypes.bool,
   isDeletable: PropTypes.func,
   isExpandable: PropTypes.func,
 
@@ -383,6 +387,7 @@ ContactPicker.defaultProps = {
   isCheckable: (/* node, depth */) => {
     return true;
   },
+  isCheckBox: true,
   isDeletable: (/* node, depth */) => {
     return false;
   },

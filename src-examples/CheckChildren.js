@@ -29,7 +29,10 @@ export default class extends Component {
 										"sId": "2",
 										"sName": "后台",
 										"isDir": true,
-										"sParentId": "1"
+										"sParentId": "1",
+										"children": [
+											{ "sId": "FengZhongJinCao", "sName": "王强😀", "vDepId": [ "2" ] }
+										]
 								},
 								{
 										"sId": "3",
